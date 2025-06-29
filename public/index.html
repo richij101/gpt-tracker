@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SED Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>SED Tracker</h1>
+    </header>
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-dashboard">Dashboard</a></li>
+                    <li><a href="#" id="nav-calendar">Calendar</a></li>
+                    <!-- <li><a href="#" id="nav-add-entry">Add New Entry</a></li> --> <!-- Direct nav link might be removed if modal is primary way -->
+                    <li><a href="#" id="nav-reports">Reports/Export</a></li>
+                    <li><a href="#" id="nav-compliance">Compliance Check</a></li>
+                </ul>
+            </nav>
+            <button id="export-csv-button" class="sidebar-button">Export All to CSV</button>
+        </aside>
+        <main class="main-content">
+            <section id="filter-controls-section">
+                <h3>Filter Entries</h3>
+                <form id="filter-form">
+                    <label for="filter-date-start">Start Date:</label>
+                    <input type="date" id="filter-date-start" name="filter-date-start">
+
+                    <label for="filter-date-end">End Date:</label>
+                    <input type="date" id="filter-date-end" name="filter-date-end">
+
+                    <label for="filter-category">Category:</label>
+                    <select id="filter-category" name="filter-category">
+                        <option value="">All</option>
+                        <option value="work_ship">Work Ship</option>
+                        <option value="work_land">Work Land</option>
+                        <option value="vacation">Vacation</option>
+                        <option value="travel">Travel</option>
+                    </select>
+
+                    <label for="filter-keyword">Ship/Country:</label>
+                    <input type="text" id="filter-keyword" name="filter-keyword" placeholder="Enter ship or country">
+
+                    <button type="button" id="apply-filters">Apply Filters</button>
+                    <button type="button" id="reset-filters">Reset Filters</button>
+                </form>
+            </section>
+
+            <section id="calendar-view">
+                <div class="calendar-header">
+                    <button id="prev-month">&lt;</button>
+                    <h2 id="month-year">Month Year</h2>
+                    <button id="next-month">&gt;</button>
+                </div>
+                <div class="calendar-grid">
+                    <!-- Calendar days will be generated here -->
+                </div>
+            </section>
+            <section id="dashboard-view" style="display: none;">
+                <h2>Dashboard Summary</h2>
+                <div id="dashboard-content">
+                    <div class="summary-section">
+                        <h3>Total Work Days - Ship: <span id="total-work-ship">0</span></h3>
+                        <ul id="work-ship-breakdown"></ul>
+                    </div>
+                    <div class="summary-section">
+                        <h3>Total Work Days - Land: <span id="total-work-land">0</span></h3>
+                        <ul id="work-land-breakdown"></ul>
+                    </div>
+                    <div class="summary-section">
+                        <h3>Total Vacation Days: <span id="total-vacation">0</span></h3>
+                    </div>
+                    <div class="summary-section">
+                        <h3>Total Travel Days: <span id="total-travel">0</span></h3>
+                    </div>
+                    <div class="summary-section" id="compliance-summary-section">
+                        <h3>SED Compliance Analysis</h3>
+                        <div class="claim-period-selector">
+                            <label for="claim-period-start">Claim Period Start:</label>
+                            <input type="date" id="claim-period-start" name="claim-period-start">
+                            <label for="claim-period-end">Claim Period End:</label>
+                            <input type="date" id="claim-period-end" name="claim-period-end">
+                            <button type="button" id="analyze-compliance-button">Analyze</button>
+                        </div>
+                        <div id="compliance-results-area">
+                            <p><strong>Overall Claim Period Status:</strong> <span id="cp-status-text">--</span> <span id="cp-status-indicator" class="status-indicator"></span></p>
+                            <p id="cp-status-reason" class="compliance-detail"></p>
+
+                            <p><strong>Days Outside UK:</strong> <span id="c-days-outside-uk">--</span> (Target: <span id="c-days-outside-uk-target">--</span>) <span id="c-days-outside-uk-indicator" class="status-indicator"></span></p>
+                            <p id="c-days-outside-uk-detail" class="compliance-detail"></p>
+
+                            <p><strong>Days in UK vs Total:</strong> <span id="c-days-in-uk">--</span> in UK / <span id="c-total-period-days">--</span> total days. (Max 50% in UK) <span id="c-uk-half-rule-indicator" class="status-indicator"></span></p>
+                            <p id="c-uk-half-rule-detail" class="compliance-detail"></p>
+
+                            <p><strong>Longest UK Visit:</strong> <span id="c-longest-uk-visit">--</span> days (Limit: <span id="c-uk-visit-limit">183</span> days) <span id="c-longest-uk-visit-indicator" class="status-indicator"></span></p>
+                            <p id="c-longest-uk-visit-detail" class="compliance-detail"></p>
+
+                            <p><strong>Longest Gap Between Voyages:</strong> <span id="c-longest-voyage-gap">--</span> days (Limit: <span id="c-voyage-gap-limit">183</span> days) <span id="c-longest-voyage-gap-indicator" class="status-indicator"></span></p>
+                            <ul id="c-voyage-gap-details" class="compliance-detail"></ul>
+                        </div>
+                        <small><em>Note: This is a simplified SED analysis. Always consult official HMRC guidelines.</em></small>
+                    </div>
+                </div>
+            </section>
+            <section id="add-entry-view" style="display: none;">
+                <h2>Add New Entry</h2>
+                <!-- Add new entry form will go here -->
+            </section>
+            <section id="reports-view" style="display: none;">
+                <h2>Reports/Export</h2>
+                <!-- Reports and export options will go here -->
+            </section>
+            <section id="compliance-view" style="display: none;">
+                <h2>Compliance Check</h2>
+                <!-- Compliance check details will go here -->
+            </section>
+        </main>
+    </div>
+
+    <!-- Add/Edit Entry Modal -->
+    <div id="entry-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-modal-button">&times;</span>
+            <h3 id="modal-title">Add/Edit Entry</h3>
+            <form id="entry-form">
+                <label for="entry-date">Date:</label>
+                <input type="text" id="entry-date" name="entry-date" readonly>
+
+                <label for="entry-category">Category:</label>
+                <select id="entry-category" name="entry-category">
+                    <option value="work_ship">Work Ship</option>
+                    <option value="work_land">Work Land</option>
+                    <option value="vacation">Vacation</option>
+                    <option value="travel">Travel</option>
+                </select>
+
+                <div id="work-ship-fields" class="conditional-fields">
+                    <label for="ship-name">Ship Name:</label>
+                    <input type="text" id="ship-name" name="ship-name">
+                </div>
+
+                <div id="work-land-fields" class="conditional-fields" style="display: none;">
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country">
+                </div>
+
+                <label for="entry-status">Status:</label>
+                <select id="entry-status" name="entry-status">
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                </select>
+
+                <label for="entry-notes">Notes (Optional):</label>
+                <textarea id="entry-notes" name="entry-notes" rows="3"></textarea>
+
+                <button type="submit" id="save-entry-button">Save Entry</button>
+                <button type="button" id="delete-entry-button" style="display: none;">Delete Entry</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../src/app.js"></script>
+</body>
+</html>

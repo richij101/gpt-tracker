@@ -1,0 +1,376 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #ddd;
+    padding: 1rem;
+    margin-right: 1rem;
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 1rem; /* Add some space before the button */
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 0.5rem 0;
+}
+
+.sidebar nav ul li a:hover {
+    color: #007bff;
+}
+
+.sidebar-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.sidebar-button:hover {
+    background-color: #0056b3;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 1rem;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 0.5rem 0;
+}
+
+.sidebar nav ul li a:hover {
+    color: #007bff;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 1rem;
+    background-color: #fff;
+}
+
+/* Basic styles for sections, will be expanded later */
+#calendar-view, #dashboard-view, #add-entry-view, #reports-view, #compliance-view {
+    margin-bottom: 1rem;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header h2 {
+    margin: 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    text-align: center;
+}
+
+.calendar-grid div {
+    padding: 10px;
+    border: 1px solid #eee;
+    min-height: 80px; /* Adjust as needed */
+    background-color: #fff;
+}
+
+.calendar-grid .day-name {
+    font-weight: bold;
+    background-color: #f0f0f0;
+    padding: 5px;
+    min-height: auto;
+}
+
+.calendar-grid .empty-day {
+    background-color: #f9f9f9;
+}
+
+.calendar-grid .current-day {
+    background-color: #e6f7ff;
+    cursor: pointer; /* Indicates clickable day cells */
+}
+
+.calendar-grid div:not(.day-name):not(.empty-day):hover {
+    background-color: #d0eaff; /* Hover effect for clickable days */
+}
+
+/* Entry display styles on calendar */
+.calendar-entry {
+    font-size: 0.7em;
+    padding: 2px;
+    margin-top: 2px;
+    border-radius: 3px;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.entry-work_ship { background-color: #007bff; /* Blue */ }
+.entry-work_land { background-color: #28a745; /* Green */ }
+.entry-vacation { background-color: #ffc107; /* Yellow */ color: #333; }
+.entry-travel { background-color: #17a2b8; /* Teal */ }
+
+.entry-status-pending {
+    border-left: 3px dotted #333; /* Dotted left border for pending */
+}
+.entry-status-confirmed {
+    border-left: 3px solid #333; /* Solid left border for confirmed */
+}
+
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modal-content input[type="text"],
+.modal-content select,
+.modal-content textarea {
+    width: calc(100% - 22px); /* Account for padding and border */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-content textarea {
+    resize: vertical;
+}
+
+.modal-content button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.modal-content button:hover {
+    background-color: #0056b3;
+}
+
+#delete-entry-button {
+    background-color: #dc3545;
+}
+
+#delete-entry-button:hover {
+    background-color: #c82333;
+}
+
+.conditional-fields {
+    /* Styles for conditional field containers if needed */
+    padding-left: 10px;
+    border-left: 3px solid #eee;
+    margin-bottom: 10px;
+}
+
+/* Filter Controls Styles */
+#filter-controls-section {
+    background-color: #e9ecef;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+#filter-controls-section h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+#filter-form label {
+    margin-right: 5px;
+    font-weight: normal;
+}
+
+#filter-form input[type="date"],
+#filter-form select,
+#filter-form input[type="text"] {
+    margin-right: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px; /* For responsive stacking */
+}
+
+#filter-form button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+#filter-form button:hover {
+    background-color: #0056b3;
+}
+
+#filter-form #reset-filters {
+    background-color: #6c757d;
+}
+
+#filter-form #reset-filters:hover {
+    background-color: #545b62;
+}
+
+#compliance-summary-section p {
+    font-size: 0.9em;
+}
+
+#compliance-summary-section .status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 5px;
+    background-color: #ccc; /* Default/unknown */
+}
+
+#compliance-summary-section .status-indicator.green {
+    background-color: #28a745; /* Green for OK */
+}
+#compliance-summary-section .status-indicator.yellow {
+    background-color: #ffc107; /* Yellow for warning */
+}
+#compliance-summary-section .status-indicator.red {
+    background-color: #dc3545; /* Red for alert */
+}
+
+.claim-period-selector {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+.claim-period-selector label {
+    margin-right: 5px;
+}
+.claim-period-selector input[type="date"] {
+    margin-right: 10px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.claim-period-selector button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+}
+
+#compliance-results-area p {
+    margin: 8px 0;
+}
+.compliance-detail {
+    font-size: 0.85em;
+    color: #555;
+    margin-left: 15px;
+}
+#c-voyage-gap-details li {
+    margin-bottom: 3px;
+}
+
+
+/* Dashboard Styles */
+#dashboard-content .summary-section {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+#dashboard-content .summary-section h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+#dashboard-content .summary-section ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+#dashboard-content .summary-section ul li {
+    margin-bottom: 5px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
