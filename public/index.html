@@ -27,26 +27,33 @@
             <section id="filter-controls-section">
                 <h3>Filter Entries</h3>
                 <form id="filter-form">
-                    <label for="filter-date-start">Start Date:</label>
-                    <input type="date" id="filter-date-start" name="filter-date-start">
-
-                    <label for="filter-date-end">End Date:</label>
-                    <input type="date" id="filter-date-end" name="filter-date-end">
-
-                    <label for="filter-category">Category:</label>
-                    <select id="filter-category" name="filter-category">
-                        <option value="">All</option>
-                        <option value="work_ship">Work Ship</option>
-                        <option value="work_land">Work Land</option>
-                        <option value="vacation">Vacation</option>
-                        <option value="travel">Travel</option>
-                    </select>
-
-                    <label for="filter-keyword">Ship/Country:</label>
-                    <input type="text" id="filter-keyword" name="filter-keyword" placeholder="Enter ship or country">
-
-                    <button type="button" id="apply-filters">Apply Filters</button>
-                    <button type="button" id="reset-filters">Reset Filters</button>
+                    <div class="filter-group">
+                        <label for="filter-date-start">Start Date:</label>
+                        <input type="date" id="filter-date-start" name="filter-date-start">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-date-end">End Date:</label>
+                        <input type="date" id="filter-date-end" name="filter-date-end">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-category">Category:</label>
+                        <select id="filter-category" name="filter-category">
+                            <option value="">All</option>
+                            <option value="work_ship">Work Ship</option>
+                            <option value="work_land">Work Land</option>
+                            <option value="vacation">Vacation</option>
+                            <option value="travel">Travel</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-keyword">Ship/Country:</label>
+                        <input type="text" id="filter-keyword" name="filter-keyword" placeholder="Enter ship or country">
+                    </div>
+                    <div class="filter-group"> <!-- Group for buttons -->
+                         <label>&nbsp;</label> <!-- Placeholder label for alignment -->
+                        <button type="button" id="apply-filters">Apply Filters</button>
+                        <button type="button" id="reset-filters">Reset Filters</button>
+                    </div>
                 </form>
             </section>
 
@@ -80,11 +87,18 @@
                     <div class="summary-section" id="compliance-summary-section">
                         <h3>SED Compliance Analysis</h3>
                         <div class="claim-period-selector">
-                            <label for="claim-period-start">Claim Period Start:</label>
-                            <input type="date" id="claim-period-start" name="claim-period-start">
-                            <label for="claim-period-end">Claim Period End:</label>
-                            <input type="date" id="claim-period-end" name="claim-period-end">
-                            <button type="button" id="analyze-compliance-button">Analyze</button>
+                            <div class="filter-group"> <!-- Using filter-group for consistency -->
+                                <label for="claim-period-start">Claim Period Start:</label>
+                                <input type="date" id="claim-period-start" name="claim-period-start">
+                            </div>
+                            <div class="filter-group"> <!-- Using filter-group for consistency -->
+                                <label for="claim-period-end">Claim Period End:</label>
+                                <input type="date" id="claim-period-end" name="claim-period-end">
+                            </div>
+                            <div class="filter-group"> <!-- Using filter-group for consistency -->
+                                <label>&nbsp;</label> <!-- Placeholder label for alignment -->
+                                <button type="button" id="analyze-compliance-button">Analyze</button>
+                            </div>
                         </div>
                         <div id="compliance-results-area">
                             <p><strong>Overall Claim Period Status:</strong> <span id="cp-status-text">--</span> <span id="cp-status-indicator" class="status-indicator"></span></p>
