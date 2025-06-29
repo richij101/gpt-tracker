@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SED Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css"> <!-- Path updated for Flask serving from static_folder='../public' -->
 </head>
 <body>
     <header>
@@ -163,6 +163,6 @@
         </div>
     </div>
 
-    <script src="../src/app.js"></script>
+    <script src="/src/app.js"></script> <!-- Path updated for Flask serving via /src/ route -->
 </body>
 </html>
