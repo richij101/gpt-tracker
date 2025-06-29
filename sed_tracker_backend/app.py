@@ -1,9 +1,19 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from models import db, Entry
 import uuid # For generating unique IDs
+import os
 
-app = Flask(__name__)
+# Determine the absolute path to the project root directory (one level up from sed_tracker_backend)
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+app = Flask(__name__,
+            static_folder=os.path.join(project_root, 'public'), # Serve static files from root 'public'
+            template_folder=os.path.join(project_root, 'public')) # Serve index.html from root 'public'
+            # Note: Using 'public' for both static and templates for simplicity of serving index.html from there.
+            # A more conventional Flask setup might put index.html in a 'templates' dir
+            # and other static assets in a 'static' dir.
+
 CORS(app) # Enable CORS for all routes and origins by default for development
 
 # Configure the SQLAlchemy part of the app instance
@@ -48,9 +58,35 @@ def create_tables_if_not_exist(app_instance):
             print("Database already exists. Tables ensured.")
 
 
+# Route to serve index.html from the root 'public' directory
 @app.route('/')
-def hello():
-    return "Hello from SED Tracker Backend!"
+def serve_index():
+    # When 'template_folder' is set to '../public', Flask's render_template
+    # would look there. However, send_from_directory is more explicit for SPA-like serving.
+    # For simplicity, let's assume index.html is the main entry point.
+    # If 'public' is also the static_folder, this might get confusing.
+    # A clearer way: set static_folder='../public', and have a specific route for index.html
+    # and another for other static assets if needed, or rely on Flask's default static serving.
+
+    # Let's use send_from_directory to serve index.html from the configured template_folder (../public)
+    # return send_from_directory(app.template_folder, 'index.html')
+    # Actually, if 'public' is the static_folder, and index.html is in it,
+    # Flask can serve it if we make a route for it or if it's requested directly.
+    # For an SPA, often a catch-all route serves index.html for any non-API, non-static-file path.
+    # For now, a simple explicit route for '/' to 'index.html'.
+    # The static_folder config should handle /style.css etc automatically if they are in ../public
+    return send_from_directory(app.static_folder, 'index.html')
+
+# Route to serve app.js from the root 'src' directory
+@app.route('/src/<path:filename>')
+def serve_app_js(filename):
+    # Construct the absolute path to the 'src' directory
+    src_dir = os.path.join(project_root, 'src')
+    return send_from_directory(src_dir, filename)
+
+# Flask will automatically serve files from 'static_folder' (set to '../public')
+# So, requests for /style.css should work if style.css is in 'public/'.
+# We need to ensure the paths in index.html are updated accordingly.
 
 # --- API Endpoints for Entries ---
 
