@@ -75,6 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Utility Functions (getFilteredEntries, isUK, getEntriesForPeriod) ---
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return '';
+        return String(str).replace(/[&<>"']/g, function (match) {
+            return {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[match];
+        });
+    }
     // These functions now operate on localEntriesCache
     function getFilteredEntries() {
         return localEntriesCache.filter(entry => {
@@ -113,22 +125,44 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
+
+            // Remove .active class from all links
+            navLinks.forEach(nav => nav.classList.remove('active'));
+            // Add .active class to the clicked link
+            link.classList.add('active');
+
             const targetId = link.id.replace('nav-', '') + '-view';
             sections.forEach(section => {
                 const isTarget = section.id === targetId;
                 section.style.display = isTarget ? 'block' : 'none';
                 if (isTarget && section.id === 'dashboard-view') {
-                    updateDashboard(); // This will also trigger compliance re-check if needed
+                    updateDashboard();
                 }
             });
         });
     });
-    // Initial view setup
+    // Initial view setup & set initial active link
     if (document.getElementById('add-entry-view')) document.getElementById('add-entry-view').style.display = 'none';
     if (document.getElementById('reports-view')) document.getElementById('reports-view').style.display = 'none';
     if (document.getElementById('compliance-view')) document.getElementById('compliance-view').style.display = 'none';
-    if (calendarView) calendarView.style.display = 'block';
-    if (dashboardView) dashboardView.style.display = 'none';
+
+    if (calendarView) {
+        calendarView.style.display = 'block';
+        const calendarNavLink = document.getElementById('nav-calendar');
+        if (calendarNavLink) {
+            // Remove active from all first (in case of weird state)
+            navLinks.forEach(nav => nav.classList.remove('active'));
+            calendarNavLink.classList.add('active');
+        }
+    } else if (dashboardView) { // Fallback if calendar isn't the default for some reason
+         dashboardView.style.display = 'block';
+         const dashboardNavLink = document.getElementById('nav-dashboard');
+         if (dashboardNavLink) {
+            navLinks.forEach(nav => nav.classList.remove('active'));
+            dashboardNavLink.classList.add('active');
+        }
+    }
+    if (dashboardView && calendarView.style.display === 'none') dashboardView.style.display = 'none'; //Ensure only one is shown
 
 
     // --- Calendar Rendering (Uses getFilteredEntries which uses localEntriesCache) ---
@@ -352,12 +386,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         totalWorkShip.textContent = workShipDays;
         workShipBreakdown.innerHTML = '';
-        Object.entries(shipCounts).forEach(([name, count]) => { const li = document.createElement('li'); li.textContent = `${name}: ${count} days`; workShipBreakdown.appendChild(li); });
+        Object.entries(shipCounts).forEach(([name, count]) => {
+            const li = document.createElement('li');
+            li.innerHTML = `${escapeHTML(name)}: <strong>${count}</strong> days`;
+            workShipBreakdown.appendChild(li);
+        });
         totalWorkLand.textContent = workLandDays;
         workLandBreakdown.innerHTML = '';
-        Object.entries(landCounts).forEach(([name, count]) => { const li = document.createElement('li'); li.textContent = `${name}: ${count} days`; workLandBreakdown.appendChild(li); });
-        totalVacation.textContent = vacationDays;
-        totalTravel.textContent = travelDays;
+        Object.entries(landCounts).forEach(([name, count]) => {
+            const li = document.createElement('li');
+            li.innerHTML = `${escapeHTML(name)}: <strong>${count}</strong> days`;
+            workLandBreakdown.appendChild(li);
+        });
+        totalVacation.textContent = vacationDays; // These are already direct numbers
+        totalTravel.textContent = travelDays;   // These are already direct numbers
 
         // Trigger compliance analysis update if the compliance section is visible
         // The runAndDisplayComplianceAnalysis itself will use its own date pickers or defaults

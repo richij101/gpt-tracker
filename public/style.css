@@ -1,376 +1,760 @@
-body {
-    font-family: sans-serif;
-    margin: 0;
-    background-color: #f4f4f4;
-    color: #333;
+/* 1. Modern CSS Reset (Inspired by several sources like normalize.css, Josh Comeau's reset) */
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
+html {
+    -moz-tab-size: 4;
+    tab-size: 4;
+    line-height: 1.5; /* Default line height */
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    line-height: inherit; /* Inherit from html */
+    background-color: #f8f9fa; /* Light grey background */
+    color: #212529; /* Darker text for better contrast */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 0.5em 0; /* Basic margin for headings */
+    font-weight: 600; /* Slightly bolder headings */
+}
+
+p {
+    margin: 0 0 1em 0; /* Basic margin for paragraphs */
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit; /* Inherit font from body */
+}
+
+button {
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/* End of Reset */
+
+
+/* 3. Color Palette Definition (CSS Custom Properties) */
+:root {
+    --primary-color: #0D6EFD;
+    --primary-color-rgb: 13, 110, 253; /* For use in rgba focus shadows */
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #DC3545;
+    --warning-color: #FFC107;
+    --info-color: #0DCAF0;
+
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+    --muted-text: #6c757d;
+    --border-color: #dee2e6;
+    --card-bg: #ffffff;
+    --link-color: var(--primary-color);
+    --link-hover-color: #0a58ca;
+    --heading-color: #343a40;
+
+    --font-sans-serif: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    --font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    --border-radius-sm: 0.2rem;
+    --border-radius: 0.25rem;
+    --border-radius-lg: 0.3rem;
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    --shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+
+/* 2. Base Typography & Global Styles (Applied after reset, uses color palette) */
+body {
+    font-family: var(--font-sans-serif);
+    font-size: 16px;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--heading-color);
+}
+
+
+/* --- App Structure & Layout --- */
+
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 1rem 1.5rem;
     text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.75em;
+    font-weight: 600;
 }
 
 .container {
     display: flex;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1.5rem;
+    gap: 1.5rem; /* Gap between sidebar and main content */
 }
 
 .sidebar {
-    width: 200px;
-    background-color: #ddd;
-    padding: 1rem;
-    margin-right: 1rem;
+    width: 250px;
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    /* margin-right: 1.5rem; -- replaced by gap */
+    border-right: 1px solid var(--border-color);
+    min-height: calc(100vh - 120px);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius-lg);
 }
 
 .sidebar nav ul {
     list-style-type: none;
     padding: 0;
-    margin-bottom: 1rem; /* Add some space before the button */
+    margin-bottom: 1.5rem;
 }
 
 .sidebar nav ul li a {
     text-decoration: none;
-    color: #333;
+    color: var(--dark-text);
     display: block;
-    padding: 0.5rem 0;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.25rem;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-.sidebar nav ul li a:hover {
-    color: #007bff;
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active { /* Add .active class via JS for current view */
+    background-color: var(--primary-color);
+    color: #ffffff;
 }
 
 .sidebar-button {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #007bff;
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     text-align: center;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out, transform 0.1s ease-out;
 }
 
 .sidebar-button:hover {
-    background-color: #0056b3;
+    background-color: var(--link-hover-color);
+    transform: translateY(-1px);
 }
 
 .main-content {
     flex-grow: 1;
-    padding: 1rem;
+    /* padding: 1.5rem; -- sections will have their own padding */
+    background-color: transparent;
 }
 
-.sidebar nav ul li a {
-    text-decoration: none;
-    color: #333;
-    display: block;
-    padding: 0.5rem 0;
+/* Section Styling */
+.main-content section {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+.main-content section h2,
+.main-content section h3 { /* Titles within sections */
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+    font-size: 1.4em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.sidebar nav ul li a:hover {
-    color: #007bff;
-}
 
-.main-content {
-    flex-grow: 1;
-    padding: 1rem;
-    background-color: #fff;
-}
-
-/* Basic styles for sections, will be expanded later */
-#calendar-view, #dashboard-view, #add-entry-view, #reports-view, #compliance-view {
-    margin-bottom: 1rem;
-}
-
+/* Calendar Styles */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    padding: 0.5rem 0;
 }
 
-.calendar-header h2 {
+.calendar-header h2 { /* Month/Year text */
     margin: 0;
+    font-size: 1.5em;
+    color: var(--dark-text);
+    border-bottom: none; /* Override section h2 style */
+    padding-bottom: 0;
+}
+
+.calendar-header button {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+.calendar-header button:hover {
+    background-color: var(--primary-color);
+    color: white;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 8px;
     text-align: center;
+    background-color: var(--card-bg); /* Grid itself has card bg, cells might too or be transparent */
+    /* border: 1px solid var(--border-color); -- Handled by section border */
+    padding: 10px;
+    border-radius: var(--border-radius);
 }
 
 .calendar-grid div {
-    padding: 10px;
-    border: 1px solid #eee;
-    min-height: 80px; /* Adjust as needed */
-    background-color: #fff;
+    padding: 4px; /* Reduced padding to make more space for day number */
+    border: 1px solid transparent;
+    min-height: 110px;
+    background-color: var(--card-bg);
+    position: relative;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease;
+    display: flex; /* Use flex to position day number */
+    flex-direction: column; /* Stack day number and entries */
+    align-items: flex-start; /* Align items to top */
 }
 
-.calendar-grid .day-name {
+.calendar-grid div > span:first-child { /* Style for the day number span */
+    font-size: 0.8em;
+    color: var(--muted-text);
+    padding: 3px 5px; /* Slightly more padding */
+    align-self: flex-end;
+    z-index: 1;
+    line-height: 1; /* Ensure tight line height for day number */
+}
+.calendar-grid .current-day > span:first-child {
+    color: var(--primary-color);
     font-weight: bold;
-    background-color: #f0f0f0;
-    padding: 5px;
+    background-color: rgba(var(--primary-color-rgb), 0.1); /* Subtle bg for current day number */
+    border-radius: var(--border-radius-sm);
+}
+
+/* Container for entries within a day cell, to allow day number to be separate */
+.day-entries-container {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Allow scrolling if many entries */
+    margin-top: 2px; /* Space below day number */
+}
+
+
+.calendar-grid .day-name {
+    font-weight: 600;
+    background-color: transparent;
+    color: var(--muted-text);
+    padding: 10px 5px;
     min-height: auto;
+    border-bottom: 2px solid var(--border-color);
+    border-radius: 0;
 }
 
 .calendar-grid .empty-day {
-    background-color: #f9f9f9;
+    background-color: #fbfcfe;
+    border: 1px dashed #e0e0e0;
+}
+
+.calendar-grid div:not(.day-name):not(.empty-day) {
+     border: 1px solid var(--border-color);
 }
 
 .calendar-grid .current-day {
-    background-color: #e6f7ff;
-    cursor: pointer; /* Indicates clickable day cells */
+    background-color: #cfe2ff;
+    border: 1px solid var(--primary-color);
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .calendar-grid div:not(.day-name):not(.empty-day):hover {
-    background-color: #d0eaff; /* Hover effect for clickable days */
+    background-color: #eef2f7;
 }
 
-/* Entry display styles on calendar */
 .calendar-entry {
-    font-size: 0.7em;
-    padding: 2px;
-    margin-top: 2px;
-    border-radius: 3px;
+    font-size: 0.8em;
+    padding: 4px 6px;
+    margin-top: 4px;
+    border-radius: var(--border-radius-sm);
     color: white;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+.calendar-entry:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
-.entry-work_ship { background-color: #007bff; /* Blue */ }
-.entry-work_land { background-color: #28a745; /* Green */ }
-.entry-vacation { background-color: #ffc107; /* Yellow */ color: #333; }
-.entry-travel { background-color: #17a2b8; /* Teal */ }
+.entry-work_ship { background-color: var(--primary-color); }
+.entry-work_land { background-color: var(--success-color); }
+.entry-vacation { background-color: var(--warning-color); color: var(--dark-text); }
+.entry-travel { background-color: var(--info-color); color: var(--dark-text); }
 
 .entry-status-pending {
-    border-left: 3px dotted #333; /* Dotted left border for pending */
-}
-.entry-status-confirmed {
-    border-left: 3px solid #333; /* Solid left border for confirmed */
+    opacity: 0.75;
+    box-shadow: inset 3px 0 0 rgba(0,0,0,0.2);
 }
 
-
-/* Modal styles */
+/* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1050;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
+    overflow-y: auto;
+    background-color: rgba(33, 37, 41, 0.6);
+    padding: 5vh 1rem; /* Added horizontal padding for small screens */
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
+    background-color: var(--card-bg);
+    margin: 0 auto;
+    padding: 2rem;
+    border: none;
     width: 90%;
-    max-width: 500px;
-    border-radius: 8px;
+    max-width: 600px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+}
+
+.modal-content #modal-title { /* Targeting the h3 directly for now */
+    margin-top: 0;
+    margin-bottom: 1.5rem; /* More space below title */
+    padding-bottom: 0.75rem; /* Padding for the underline */
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.4em; /* Slightly larger modal title */
+    color: var(--heading-color);
 }
 
 .modal-content label {
     display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: var(--muted-text);
+}
+.modal-content label:first-of-type { /* Use first-of-type for first label */
+    margin-top: 0;
 }
 
 .modal-content input[type="text"],
+.modal-content input[type="date"], /* Added date for consistent styling */
 .modal-content select,
 .modal-content textarea {
-    width: calc(100% - 22px); /* Account for padding and border */
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
     box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content input[type="date"]:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25);
+    outline: none;
 }
 
 .modal-content textarea {
     resize: vertical;
+    min-height: 90px;
 }
 
-.modal-content button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
+.modal-content button { /* General button style in modal */
+    padding: 0.6rem 1.2rem;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    margin-top: 10px;
-    margin-right: 5px;
+    margin-top: 1.5rem;
+    margin-right: 0.5rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out, transform 0.1s ease-out;
 }
-
 .modal-content button:hover {
-    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+.modal-content button[type="submit"] { /* Specific for save button */
+    background-color: var(--primary-color);
+    color: white;
+}
+.modal-content button[type="submit"]:hover {
+    background-color: var(--link-hover-color);
 }
 
-#delete-entry-button {
-    background-color: #dc3545;
-}
 
+#delete-entry-button { /* This is already specific */
+    background-color: var(--danger-color);
+    color: white;
+}
 #delete-entry-button:hover {
     background-color: #c82333;
 }
 
 .conditional-fields {
-    /* Styles for conditional field containers if needed */
-    padding-left: 10px;
-    border-left: 3px solid #eee;
-    margin-bottom: 10px;
+    padding-left: 1rem;
+    border-left: 2px solid #e9ecef;
+    margin-bottom: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.1rem;
 }
 
-/* Filter Controls Styles */
-#filter-controls-section {
-    background-color: #e9ecef;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+.close-button {
+    color: var(--muted-text);
+    float: right;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.15s ease-out;
+    background: none; /* Ensure no button bg */
+    border: none; /* Ensure no button border */
+    padding: 0; /* Ensure no button padding */
+}
+.close-button:hover,
+.close-button:focus {
+    color: var(--dark-text);
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 1;
 }
 
-#filter-controls-section h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
+/* Filter Controls (inside a section, so inherits section padding/bg) */
+#filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+#filter-form div.filter-group { /* Create a wrapper for label + input for better flex control */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 180px; /* Ensure groups have a min width */
 }
 
 #filter-form label {
-    margin-right: 5px;
-    font-weight: normal;
+    margin-right: 0; /* Handled by group */
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    font-size: 0.9em;
+    color: var(--muted-text);
 }
 
 #filter-form input[type="date"],
 #filter-form select,
 #filter-form input[type="text"] {
-    margin-right: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px; /* For responsive stacking */
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+}
+#filter-form input[type="text"]::placeholder {
+    color: #adb5bd;
+    opacity: 1;
 }
 
-#filter-form button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
+#filter-form button { /* Buttons in filter form */
+    padding: 0.5rem 1rem;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    margin-right: 5px;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out, transform 0.1s ease-out;
+    align-self: flex-end;
+    margin-bottom: 0; /* Align with inputs that don't have extra bottom margin */
 }
-
-#filter-form button:hover {
-    background-color: #0056b3;
+#filter-form button:hover{
+    transform: translateY(-1px);
 }
-
+#filter-form #apply-filters {
+    background-color: var(--primary-color);
+    color: white;
+}
+#filter-form #apply-filters:hover {
+    background-color: var(--link-hover-color);
+}
 #filter-form #reset-filters {
-    background-color: #6c757d;
+    background-color: var(--secondary-color);
+    color: white;
 }
-
 #filter-form #reset-filters:hover {
-    background-color: #545b62;
-}
-
-#compliance-summary-section p {
-    font-size: 0.9em;
-}
-
-#compliance-summary-section .status-indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 5px;
-    background-color: #ccc; /* Default/unknown */
-}
-
-#compliance-summary-section .status-indicator.green {
-    background-color: #28a745; /* Green for OK */
-}
-#compliance-summary-section .status-indicator.yellow {
-    background-color: #ffc107; /* Yellow for warning */
-}
-#compliance-summary-section .status-indicator.red {
-    background-color: #dc3545; /* Red for alert */
-}
-
-.claim-period-selector {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-}
-.claim-period-selector label {
-    margin-right: 5px;
-}
-.claim-period-selector input[type="date"] {
-    margin-right: 10px;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.claim-period-selector button {
-    padding: 6px 12px;
-    font-size: 0.9em;
-}
-
-#compliance-results-area p {
-    margin: 8px 0;
-}
-.compliance-detail {
-    font-size: 0.85em;
-    color: #555;
-    margin-left: 15px;
-}
-#c-voyage-gap-details li {
-    margin-bottom: 3px;
+    background-color: #5a6268;
 }
 
 
-/* Dashboard Styles */
-#dashboard-content .summary-section {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-}
-
-#dashboard-content .summary-section h3 {
-    margin-top: 0;
-    color: #333;
+/* Dashboard & Compliance (inside sections) */
+#dashboard-content .summary-section h3, /* Already styled by section h3 */
+#compliance-summary-section h3 { /* Already styled by section h3 */
+    font-size: 1.3rem;
 }
 
 #dashboard-content .summary-section ul {
     list-style-type: none;
-    padding-left: 10px;
+    padding-left: 0;
 }
-
 #dashboard-content .summary-section ul li {
-    margin-bottom: 5px;
+    margin-bottom: 0.4rem;
+    color: var(--muted-text);
+    font-size: 0.95em;
+}
+#dashboard-content .summary-section ul li span {
+    color: var(--dark-text);
+    font-weight: 500;
 }
 
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+/* --- Responsive Design Improvements --- */
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+    .container {
+        flex-direction: column; /* Stack sidebar and main content */
+        gap: 0; /* Remove gap when stacked, use margins instead */
+    }
+
+    .sidebar {
+        width: 100%; /* Full width for stacked sidebar */
+        margin-right: 0;
+        margin-bottom: 1.5rem; /* Space below sidebar when stacked */
+        min-height: auto; /* Adjust min-height */
+        border-right: none; /* Remove border when stacked */
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .main-content {
+        padding: 1rem; /* Adjust padding for smaller screens */
+    }
+
+    #filter-form, .claim-period-selector {
+        gap: 0.75rem; /* Reduce gap slightly */
+    }
+    #filter-form div.filter-group,
+    .claim-period-selector div.filter-group {
+        min-width: 150px; /* Allow groups to be a bit smaller */
+    }
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    body {
+        font-size: 15px; /* Slightly smaller base font for small screens */
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+    .main-content section h2,
+    .main-content section h3 {
+        font-size: 1.2em;
+    }
+
+    .calendar-grid {
+        gap: 3px; /* Smaller gap for calendar cells */
+        padding: 5px;
+    }
+    .calendar-grid div {
+        min-height: 80px; /* Shorter cells */
+        padding: 2px; /* Less padding in cells */
+    }
+    .calendar-grid div > span:first-child { /* Day number */
+        font-size: 0.75em;
+        padding: 1px 2px;
+    }
+    .calendar-entry {
+        font-size: 0.7em;
+        padding: 2px 3px;
+        margin-top: 2px;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        max-width: 95%; /* Allow modal to use more screen width */
+    }
+
+    #filter-form, .claim-period-selector {
+        flex-direction: column; /* Stack filter items fully */
+        align-items: stretch; /* Make items full width */
+    }
+    #filter-form div.filter-group,
+    .claim-period-selector div.filter-group {
+        width: 100%; /* Full width for filter groups */
+    }
+    #filter-form button,
+    .claim-period-selector button {
+        width: 100%; /* Full width buttons in stacked form */
+        margin-top: 0.5rem;
+    }
+    #filter-form div.filter-group label:empty { /* Hide empty labels used for spacing */
+        display: none;
+    }
+     .claim-period-selector div.filter-group label:empty {
+        display: none;
+    }
+
+
 }
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .main-content {
+        padding: 0.75rem; /* Even less padding */
+    }
+     .main-content section {
+        padding: 1rem;
+    }
+
+    .calendar-grid div {
+        min-height: 70px;
+    }
+     .calendar-entry {
+        /* Potentially hide entry text and only show color block, or further reduce size */
+        /* For now, keep as is, but this is where it gets tricky */
+    }
+}
+/* Make the actual number/value in dashboard list items more prominent */
+#dashboard-content .summary-section ul li > span:first-of-type, /* If number is in a span */
+#dashboard-content .summary-section ul li strong { /* If number is in a strong tag */
+    font-weight: 600; /* Bolder */
+    color: var(--dark-text); /* Ensure it's dark text */
+    font-size: 1.05em; /* Slightly larger */
+}
+/* Assuming structure like <h3>Total: <span id="total-xyz">VALUE</span></h3> */
+#dashboard-content .summary-section h3 > span {
+    font-weight: 600;
+    color: var(--primary-color); /* Highlight total numbers in section titles */
+}
+
+
+#compliance-summary-section p {
+    font-size: 0.95em;
+    margin-bottom: 0.6rem;
+}
+#compliance-summary-section .status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 8px;
+    vertical-align: middle;
+    background-color: #ccc;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+#compliance-summary-section .status-indicator.green { background-color: var(--success-color); }
+#compliance-summary-section .status-indicator.yellow { background-color: var(--warning-color); }
+#compliance-summary-section .status-indicator.red { background-color: var(--danger-color); }
+
+.claim-period-selector {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+}
+.claim-period-selector div.filter-group { /* Use filter-group for consistency */
+    display: flex;
+    flex-direction: column;
+}
+.claim-period-selector label {
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    font-size: 0.9em;
+    color: var(--muted-text);
+}
+.claim-period-selector input[type="date"] {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+.claim-period-selector button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9em;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    align-self: flex-end;
+    transition: background-color 0.15s ease-in-out, transform 0.1s ease-out;
+}
+.claim-period-selector button:hover {
+    background-color: var(--link-hover-color);
+    transform: translateY(-1px);
+}
+
+#compliance-results-area p {
+    margin: 0.6rem 0;
+}
+.compliance-detail {
+    font-size: 0.9em;
+    color: var(--muted-text);
+    margin-left: 1.5rem;
+    margin-top: 0.3rem;
+}
+#c-voyage-gap-details {
+    padding-left: 1.75rem;
+    list-style-type: disc;
+}
+#c-voyage-gap-details li {
+    margin-bottom: 0.3rem;
+}
+```
